@@ -78,7 +78,7 @@ let passwordHelper = GenericPasswordKeychainHelper(serviceAttribute: "authentica
 try? passwordHelper.setValue("my-password")
 ```
 
-We can then read the value of the password later on
+We can then read the value of the password later on:
 
 ```Swift
 let passwordHelper = GenericPasswordKeychainHelper(serviceAttribute: "authentication")
@@ -87,4 +87,4 @@ print(myPassword) // "my-password"
 ```
 
 ## Inspiration
-Inspired by this article on https://www.raywenderlich.com/9240-keychain-services-api-tutorial-for-passwords-in-swift
+Inspired by this article: https://www.raywenderlich.com/9240-keychain-services-api-tutorial-for-passwords-in-swift
