@@ -7,19 +7,23 @@
 
 import Foundation
 
-class KeychainHelper {
+open class KeychainHelper {
+    
+    // MARK: - Properties & Initialization
     
     /// the attributes this helper uses to interact with the keychain
-    let keychainAttributes: [String: Any]
+    public let keychainAttributes: [String: Any]
     
-    init(keychainAttributes: [String: Any]) {
+    public init(keychainAttributes: [String: Any]) {
         self.keychainAttributes = keychainAttributes
     }
+    
+    // MARK: - API
     
     /// Sets the value for the given keychain item service attribute
     /// - Parameter value: the new value to set
     /// - Throws: KeychainHelperError if the value was not set successfully
-    func setValue(_ value: String) throws {
+    open func setValue(_ value: String) throws {
         guard let encodedValue = value.data(using: .utf8) else {
             throw KeychainHelperError.stringToDataConversionError
         }
@@ -58,7 +62,7 @@ class KeychainHelper {
     /// Retrieves the value for the given keychain item service attribute
     /// - Throws: KeychainHelperError if an unknown
     /// - Returns: the `String` value for the authentication service or `nil`, if it doesn't exist
-    func getValue() throws -> String? {
+    open func getValue() throws -> String? {
         // create a query that specifies which data we want returned
         var newQuery = keychainAttributes
         newQuery[String(kSecMatchLimit)] = kSecMatchLimitOne
@@ -93,7 +97,7 @@ class KeychainHelper {
     
     /// Attempts to delete the given keychain item service attribute
     /// - Throws: KeychainHelperError if an error occurs
-    func deleteValue() throws {
+    open func deleteValue() throws {
         let result = SecItemDelete(keychainAttributes as CFDictionary)
         
         guard result == errSecSuccess || result == errSecItemNotFound else {
@@ -101,12 +105,12 @@ class KeychainHelper {
         }
     }
     
+    // MARK: - Error Handling
+    
     private func generateError(with status: OSStatus) -> KeychainHelperError {
         let message = SecCopyErrorMessageString(status, nil) as String? ?? Constants.unknownErrorMessage
         return KeychainHelperError.unhandledError(message: message)
     }
-    
-    // MARK: - Constants
     
     private struct Constants {
         static let unknownErrorMessage = "An unknown error has occurred"

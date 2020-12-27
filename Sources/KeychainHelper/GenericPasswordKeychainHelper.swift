@@ -8,13 +8,13 @@
 import Foundation
 
 /// Creates a KeychainHelper using `kSecClassGenericPassword` for the `kSecClass` keychain attribute
-class GenericPasswordKeychainHelper: KeychainHelper {
+open class GenericPasswordKeychainHelper: KeychainHelper {
     /// the keychain item service identifier that this object acts upon
-    let serviceAttribute: String
+    public let serviceAttribute: String
     
     /// Initializes a helper for the given Generic Password service
     /// - Parameter serviceAttribute: the keychain item service identifier `kSecAttrService`
-    init(serviceAttribute: String) {
+    public init(serviceAttribute: String) {
         self.serviceAttribute = serviceAttribute
         
         super.init(keychainAttributes: [

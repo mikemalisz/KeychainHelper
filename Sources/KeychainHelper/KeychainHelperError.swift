@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum KeychainHelperError: Error {
+public enum KeychainHelperError: Error {
   case stringToDataConversionError
   case dataToStringConversionError
   case unhandledError(message: String)
