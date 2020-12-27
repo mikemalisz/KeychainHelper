@@ -1,6 +1,7 @@
 # A simple wrapper for working with Apple's Keychain API 🔑 
 
-[![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
+![Swift](https://github.com/mikemalisz/KeychainHelper/workflows/Swift/badge.svg?branch=main)
+[![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-informational.svg)](https://github.com/apple/swift-package-manager)
 
 This package currently provides functionality for getting, setting, and deleting values from the keychain. 
 
