@@ -36,7 +36,8 @@ Now, you can use this object to read, set, or delete values for the given attrib
 
 ```Swift
 do {
-    try keychainHelper.setValue("password1234")
+    let encodedValue = "password1234".data(using: .utf8)!
+    try keychainHelper.setValue(encodedValue)
 } catch {
     print(error)
 }
@@ -48,11 +49,14 @@ This method sets the given value for the attributes given during initialization.
 
 ```Swift
 do {
-    let decryptedValue = try keychainHelper.getValue()
-    guard let decryptedValue = try keychainHelper.getValue() else { 
+    guard 
+        let decryptedData = try keychainHelper.getValue(),
+        let decryptedValue = String(data: decryptedData, encoding: .utf8)
+    else { 
         return
     }
     // use decrypted value
+    
 } catch {
     print(error)
 }
@@ -75,15 +79,20 @@ Example usage might consist of:
 
 ```Swift
 let passwordHelper = GenericPasswordKeychainHelper(serviceAttribute: "authentication")
-try? passwordHelper.setValue("my-password")
+try? passwordHelper.setValue("my-password".data(using: .utf8)!)
 ```
 
 We can then read the value of the password later on:
 
 ```Swift
 let passwordHelper = GenericPasswordKeychainHelper(serviceAttribute: "authentication")
-let myPassword = try? passwordHelper.getValue()
-print(myPassword) // "my-password"
+
+guard 
+    let passwordData = try? passwordHelper.getValue(),
+    let decodedPassword = String(data: decryptedData, encoding: .utf8)
+else { return }
+
+print(decodedPassword) // "my-password"
 ```
 
 ## Inspiration
