@@ -2,15 +2,18 @@
 import XCTest
 @testable import KeychainHelper
 
-final class GenericPasswordKeychainHelperTests: XCTestCase {
+final class KeychainHelperTests: XCTestCase {
     
-    private var helper: GenericPasswordKeychainHelper!
+    private var helper: KeychainHelper!
     
     override func setUp() {
         super.setUp()
         
-        let serviceAttribute = "myPassword"
-        helper = GenericPasswordKeychainHelper(serviceAttribute: serviceAttribute)
+        let attributes: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: "myPassword"
+        ]
+        helper = KeychainHelper(keychainAttributes: attributes)
     }
     
     override func tearDown() {
@@ -22,11 +25,11 @@ final class GenericPasswordKeychainHelperTests: XCTestCase {
     func testSetValueOnce() {
         let testValue = "first"
         do {
-            try helper.setValue(testValue)
+            try helper.setValue(testValue.data(using: .utf8)!)
             
-            let returnedValue = try helper.getValue()
+            let returnedValue = try helper.getValue()!
             
-            XCTAssert(testValue == returnedValue)
+            XCTAssert(testValue == String(data: returnedValue, encoding: .utf8))
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -37,12 +40,12 @@ final class GenericPasswordKeychainHelperTests: XCTestCase {
         let firstTest = "first"
         let secondTest = "second"
         do {
-            try helper.setValue(firstTest)
-            try helper.setValue(secondTest)
+            try helper.setValue(firstTest.data(using: .utf8)!)
+            try helper.setValue(secondTest.data(using: .utf8)!)
             
-            let returnedValue = try helper.getValue()
+            let returnedValue = try helper.getValue()!
             
-            XCTAssert(secondTest == returnedValue)
+            XCTAssert(secondTest == String(data: returnedValue, encoding: .utf8))
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -51,7 +54,7 @@ final class GenericPasswordKeychainHelperTests: XCTestCase {
     func testDeleteValue() {
         let firstTest = "first"
         do {
-            try helper.setValue(firstTest)
+            try helper.setValue(firstTest.data(using: .utf8)!)
             try helper.deleteValue()
             
             let returnedValue = try helper.getValue()
