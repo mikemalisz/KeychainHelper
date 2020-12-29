@@ -74,9 +74,6 @@ open class KeychainHelper {
         // handle the result of the query
         switch result {
         case errSecSuccess:
-            if let keychainItems = queryResult as? [String: Any] {
-                print(keychainItems)
-            }
             guard
                 let keychainItem = queryResult as? [String: Any],
                 let valueData = keychainItem[String(kSecValueData)] as? Data
